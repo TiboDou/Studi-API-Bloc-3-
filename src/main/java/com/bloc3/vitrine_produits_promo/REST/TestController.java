@@ -11,7 +11,7 @@ public class TestController {
 
     @GetMapping
     public ResponseEntity<String> sayHello() {
-        return ResponseEntity.ok("Damn it steve");
+        return ResponseEntity.ok("Coucou Jadou");
     }
 
 }
