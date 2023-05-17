@@ -1,6 +1,8 @@
-package com.bloc3.vitrine_produits_promo.REST.Services;
+package com.bloc3.vitrine_produits_promo.REST;
 
 import com.bloc3.vitrine_produits_promo.Models.Promotions;
+import com.bloc3.vitrine_produits_promo.REST.Services.ProduitsServices;
+import com.bloc3.vitrine_produits_promo.REST.Services.PromotionsServices;
 import com.bloc3.vitrine_produits_promo.util.SiExiste;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
