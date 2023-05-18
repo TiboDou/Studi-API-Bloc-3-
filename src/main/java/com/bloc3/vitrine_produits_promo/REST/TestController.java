@@ -11,7 +11,7 @@ public class TestController {
 
     @GetMapping
     public ResponseEntity<String> sayHello() {
-        return ResponseEntity.ok("Coucou Jadou");
+        return ResponseEntity.ok("L'API semble être correctement déployée, bravo le veau");
     }
 
 }
