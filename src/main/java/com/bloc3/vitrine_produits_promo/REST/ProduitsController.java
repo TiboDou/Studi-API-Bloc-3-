@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/produits")
-@CrossOrigin(origins ="https://studi-bloc3-front-td.herokuapp.com")
+//@CrossOrigin(origins ="https://studi-bloc3-front-td.herokuapp.com")
 public class ProduitsController {
 
     @Autowired //

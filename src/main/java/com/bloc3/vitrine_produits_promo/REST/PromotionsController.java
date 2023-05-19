@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins ="https://studi-bloc3-front-td.herokuapp.com")
+//@CrossOrigin(origins ="https://studi-bloc3-front-td.herokuapp.com")
 public class PromotionsController {
 
     @Autowired
