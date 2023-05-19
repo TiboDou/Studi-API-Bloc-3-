@@ -44,7 +44,7 @@ public class ProduitsController {
         Produits reponse =  prodService.findById(no_produit);
 
         if (reponse != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(String.valueOf(prodService.findById(no_produit)));
+            return ResponseEntity.status(HttpStatus.OK).body(prodService.findById(no_produit).toString());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Le produit avec l'ID " + no_produit + " n'existe pas");
         }
