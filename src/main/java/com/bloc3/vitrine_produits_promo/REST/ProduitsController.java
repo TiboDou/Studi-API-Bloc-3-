@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -45,7 +44,7 @@ public class ProduitsController {
         Produits reponse =  prodService.findById(no_produit);
 
         if (reponse != null) {
-            return ResponseEntity.ok(String.valueOf(prodService.findById(no_produit)));
+            return ResponseEntity.status(HttpStatus.OK).body(String.valueOf(prodService.findById(no_produit)));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Le produit avec l'ID " + no_produit + " n'existe pas");
         }
