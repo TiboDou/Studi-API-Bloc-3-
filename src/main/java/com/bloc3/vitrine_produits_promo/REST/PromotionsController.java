@@ -1,18 +1,24 @@
 package com.bloc3.vitrine_produits_promo.REST;
 
+import com.bloc3.vitrine_produits_promo.Models.Produits;
 import com.bloc3.vitrine_produits_promo.Models.Promotions;
 import com.bloc3.vitrine_produits_promo.REST.Services.ProduitsServices;
 import com.bloc3.vitrine_produits_promo.REST.Services.PromotionsServices;
 import com.bloc3.vitrine_produits_promo.util.SiExiste;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
-//@CrossOrigin(origins ="https://studi-bloc3-front-td.herokuapp.com")
+@Tag(name = "Promotions", description = "Endpoint pour la gestion des promotions")
 public class PromotionsController {
 
     @Autowired
@@ -22,9 +28,19 @@ public class PromotionsController {
     public ProduitsServices prodServices;
 
     @GetMapping("/produits/{no_produit}/promotions")
-    public List<Promotions> findAllOfProduits(@PathVariable("no_produit") int no_produit) {
-        SiExiste.checkFound(prodServices.findById(no_produit));
-        return promoServices.findAllOfProduits(no_produit);
+    @Operation(summary = "Récupère toutes les promotions d'un produit")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Liste des promotions récupérée"),
+            @ApiResponse(responseCode = "404", description = "Le produit n'a pas été trouvé")
+    })
+    public ResponseEntity<List<Promotions>> findAllOfProduits(@PathVariable("no_produit") int no_produit) {
+        Produits produit = prodServices.findById(no_produit);
+        if (produit != null) {
+            List<Promotions> promotions = promoServices.findAllOfProduits(no_produit);
+            return ResponseEntity.ok(promoServices.findAllOfProduits(no_produit));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/promotions/{no_promotion}")

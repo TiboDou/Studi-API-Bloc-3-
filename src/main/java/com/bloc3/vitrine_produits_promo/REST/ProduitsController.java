@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
@@ -39,18 +40,18 @@ public class ProduitsController {
 
     @GetMapping("/{no_produit}")
     @Operation(summary = "Permet de récupérer un produit via son ID")
-    @ApiResponse(responseCode = "200", description = "Le produit a été trouvé", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produits.class)))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Le produit a été trouvé", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produits.class))),
+            @ApiResponse(responseCode = "404", description = "Le produit n'existe pas")
+    })
         public ResponseEntity<Produits> findById(@PathVariable("no_produit") int no_produit) {
         Produits reponse =  prodService.findById(no_produit);
-
         if (reponse != null) {
-
             return ResponseEntity.status(HttpStatus.OK).body(reponse);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(reponse);
         }
     }
-
 
     @PostMapping
     @Operation(summary = "Permet de créer un nouveau produit")
