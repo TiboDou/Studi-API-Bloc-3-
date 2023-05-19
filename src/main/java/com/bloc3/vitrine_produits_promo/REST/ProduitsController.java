@@ -45,9 +45,11 @@ public class ProduitsController {
         Produits reponse =  prodService.findById(no_produit);
 
         if (reponse != null) {
+            Link selfLink = WebMvcLinkBuilder.linkTo(ProduitsController.class).slash(reponse.getNo_produit()).withSelfRel();
+            reponse.add(selfLink);
             return ResponseEntity.ok(String.valueOf(reponse));
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Le produit avec l'ID" + no_produit + " n'existe pas");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Le produit avec l'ID " + no_produit + " n'existe pas");
         }
     }
 
