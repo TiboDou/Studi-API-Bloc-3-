@@ -8,7 +8,7 @@ public final class SiExiste {
 
     public static <T> T checkFound(T objet) {
         if(objet == null) {
-            throw new ResourceNotFoundException();
+            throw new ResourceNotFoundException("Bordel");
         }
         return objet;
     }
