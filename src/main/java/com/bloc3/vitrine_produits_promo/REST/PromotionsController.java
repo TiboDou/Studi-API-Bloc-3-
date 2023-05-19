@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins ="*") // -> La porte ouverte à toutes les fenêtres, seulement pour la phase de test, indiquer l'URL du site en phase de déploiement
+@CrossOrigin(origins ="https://studi-bloc3-front-td.herokuapp.com")
 public class PromotionsController {
 
     @Autowired

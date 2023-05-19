@@ -14,7 +14,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/produits")
- // -> La porte ouverte à toutes les fenêtres, seulement pour la phase de test, indiquer l'URL du site en phase de déploiement
 public class ProduitsController {
 
     @Autowired //
