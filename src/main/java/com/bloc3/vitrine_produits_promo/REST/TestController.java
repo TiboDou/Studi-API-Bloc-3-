@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/test-controller")
-@Tag(name = "Produits", description = "Endpoint pour vérifier rapidement si l'API est bien déployée et accessible")
+@Tag(name = "Test API", description = "Endpoint pour vérifier rapidement si l'API est bien déployée et accessible")
 public class TestController {
 
     @GetMapping
     public ResponseEntity<String> sayHello() {
-        return ResponseEntity.ok("L'API semble être correctement déployée, bravo le veau");
+        return ResponseEntity.ok("L'API semble être correctement déployée, bravo !");
     }
 }

@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,33 +60,70 @@ public class PromotionsController {
     }
 
     @PostMapping("/produits/{no_produit}/promotions")
+    @Operation(summary = "Crée une nouvelle promotion pour un produit")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "La promotion a été créée"),
+            @ApiResponse(responseCode = "404", description = "Le produit n'a pas été trouvé")
+    })
     @ResponseStatus(code = HttpStatus.CREATED)
-    public int create(@PathVariable("no_produit") int no_produit,@RequestBody Promotions promotion) {
-        SiExiste.checkFound(prodServices.findById(no_produit));
-        return promoServices.create(no_produit, promotion);
+    public ResponseEntity<Integer> create(@PathVariable("no_produit") int no_produit,@RequestBody Promotions promotion) {
+        if (prodServices.findById(no_produit) != null) {
+            int promotionId = promoServices.create(no_produit, promotion);
+            return ResponseEntity.status(HttpStatus.CREATED).body(promotionId);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PutMapping("/promotions/{no_promotion}")
+    @Operation(summary = "Met à jour une promotion par ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "La promotion a été mise à jour"),
+            @ApiResponse(responseCode = "404", description = "La promotion n'a pas été trouvée")
+    })
     @ResponseStatus(code = HttpStatus.OK)
-    public void update(@PathVariable("no_promotion") int no_promotion, @RequestBody Promotions promotions) {
-        SiExiste.checkFound(promoServices.findById(no_promotion));
-
-        promoServices.update(no_promotion, promotions);
+    public ResponseEntity<Void> update(@PathVariable("no_promotion") int no_promotion, @RequestBody Promotions promotions) {
+        Promotions promotion = promoServices.findById(no_promotion);
+        if (promotion != null) {
+            promoServices.update(no_promotion, promotions);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PatchMapping("/promotions/{no_promotion}")
+    @Operation(summary = "Met à jour une promotion par ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "La promotion a été mise à jour"),
+            @ApiResponse(responseCode = "404", description = "La promotion n'a pas été trouvée")
+    })
     @ResponseStatus(code = HttpStatus.OK)
-    public void partialUpdate(@PathVariable("no_promotion") int no_promotion, @RequestBody Map<String, Object> updates) {
-        SiExiste.checkFound(promoServices.findById(no_promotion));
-
-        promoServices.partialUpdate(no_promotion, updates);
+    public ResponseEntity<Void> partialUpdate(@PathVariable("no_promotion") int no_promotion, @RequestBody Map<String, Object> updates) {
+        Promotions promotion = promoServices.findById(no_promotion);
+        if (promotion != null) {
+            promoServices.partialUpdate(no_promotion, updates);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/produits/{no_produit}/promotions/{no_promotion}")
-    public void delete(@PathVariable("no_produit") int no_produit, @PathVariable("no_promotion") int no_promotion) {
-        SiExiste.checkFound(prodServices.findById(no_produit));
-        SiExiste.checkFound(promoServices.findById(no_promotion));
-
-        promoServices.deleteById(no_produit, no_promotion);
+    @Operation(summary = "Supprime une promotion par ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "La promotion a été supprimée"),
+            @ApiResponse(responseCode = "404", description = "La promotion n'a pas été trouvée")
+    })
+    public ResponseEntity<Void> delete(@PathVariable("no_produit") int no_produit, @PathVariable("no_promotion") int no_promotion) {
+        Produits produit = prodServices.findById(no_produit);
+        if (produit != null) {
+            Promotions promotion = promoServices.findById(no_promotion);
+            if (promotion != null) {
+                promoServices.deleteById(no_produit, no_promotion);
+                return ResponseEntity.noContent().build();
+            }
+        }
+        return ResponseEntity.notFound().build();
     }
 }
