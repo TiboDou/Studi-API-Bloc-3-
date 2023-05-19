@@ -1,13 +1,11 @@
 package com.bloc3.vitrine_produits_promo.Models;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 
 @Entity //L'annotation @Entity indique qu'une classe représente une table dans une base de données
-@JsonSerialize
 public class Produits extends RepresentationModel<Produits> {
 
     @Id

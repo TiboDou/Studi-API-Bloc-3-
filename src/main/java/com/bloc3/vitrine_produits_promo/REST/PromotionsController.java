@@ -28,7 +28,7 @@ public class PromotionsController {
     public ProduitsServices prodServices;
 
     @GetMapping("/produits/{no_produit}/promotions")
-    @Operation(summary = "Récupère toutes les promotions d'un produit")
+    @Operation(summary = "Permet de récupérer toutes les promotions d'un produit")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Liste des promotions récupérée"),
             @ApiResponse(responseCode = "404", description = "Le produit n'a pas été trouvé")
@@ -44,10 +44,18 @@ public class PromotionsController {
     }
 
     @GetMapping("/promotions/{no_promotion}")
-    public Promotions findById(@PathVariable("no_promotion") int no_promotion) {
+    @Operation(summary = "Permet de récupérer une promotion via son ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "La promotion a été trouvée"),
+            @ApiResponse(responseCode = "404", description = "La promotion n'a pas été trouvée")
+    })
+    public ResponseEntity<Promotions> findById(@PathVariable("no_promotion") int no_promotion) {
         Promotions reponse = promoServices.findById(no_promotion);
-        SiExiste.checkFound(reponse);
-        return reponse;
+        if (reponse != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(reponse);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(reponse);
+        }
     }
 
     @PostMapping("/produits/{no_produit}/promotions")
