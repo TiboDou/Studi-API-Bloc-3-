@@ -84,6 +84,4 @@ public class PromotionsServiceImpl implements PromotionsServices {
         prodRepository.save(prodToUpdate);
         promoRepository.delete(promotion); //On delete la promo
     }
-
-
 }

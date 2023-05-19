@@ -4,12 +4,11 @@ import com.bloc3.vitrine_produits_promo.Models.Produits;
 import com.bloc3.vitrine_produits_promo.Models.Promotions;
 import com.bloc3.vitrine_produits_promo.REST.Services.ProduitsServices;
 import com.bloc3.vitrine_produits_promo.REST.Services.PromotionsServices;
-import com.bloc3.vitrine_produits_promo.util.SiExiste;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -112,7 +111,7 @@ public class PromotionsController {
     @DeleteMapping("/produits/{no_produit}/promotions/{no_promotion}")
     @Operation(summary = "Supprime une promotion par ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "La promotion a été supprimée"),
+            @ApiResponse(responseCode = "200", description = "La promotion a été supprimée"),
             @ApiResponse(responseCode = "404", description = "La promotion n'a pas été trouvée")
     })
     public ResponseEntity<Void> delete(@PathVariable("no_produit") int no_produit, @PathVariable("no_promotion") int no_promotion) {
@@ -121,7 +120,7 @@ public class PromotionsController {
             Promotions promotion = promoServices.findById(no_promotion);
             if (promotion != null) {
                 promoServices.deleteById(no_produit, no_promotion);
-                return ResponseEntity.noContent().build();
+                return ResponseEntity.ok().build();
             }
         }
         return ResponseEntity.notFound().build();

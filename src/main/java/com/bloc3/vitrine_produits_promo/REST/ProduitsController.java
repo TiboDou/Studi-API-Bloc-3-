@@ -2,7 +2,6 @@ package com.bloc3.vitrine_produits_promo.REST;
 
 import com.bloc3.vitrine_produits_promo.Models.Produits;
 import com.bloc3.vitrine_produits_promo.REST.Services.ProduitsServices;
-import com.bloc3.vitrine_produits_promo.util.SiExiste;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -63,28 +62,52 @@ public class ProduitsController {
 
     @PutMapping("/{no_produit}")
     @Operation(summary = "Permet de mettre à jouer un produit via son ID")
-    @ApiResponse(responseCode = "200", description = "Le produit a été modifié", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produits.class)))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Le produit a été modifié", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produits.class))),
+            @ApiResponse(responseCode = "404", description = "Le produit n'a pas été trouvé")
+    })
     @ResponseStatus(code = HttpStatus.OK)
-    public void update(@PathVariable("no_produit") int no_produit, @RequestBody Produits produit) {
-        SiExiste.checkFound(prodService.findById(no_produit));
-        prodService.update(no_produit, produit);
+    public ResponseEntity<Void> update(@PathVariable("no_produit") int no_produit, @RequestBody Produits produit) {
+        Produits reponse =  prodService.findById(no_produit);
+        if (reponse != null) {
+            prodService.update(no_produit, produit);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PatchMapping("/{no_produit}")
     @Operation(summary = "Permet de mettre à jour partiellement un produit via son ID")
-    @ApiResponse(responseCode = "200", description = "Le produit a été modifié", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produits.class)))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Le produit a été modifié", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produits.class))),
+            @ApiResponse(responseCode = "404", description = "Le produit n'a pas été trouvé")
+    })
     @ResponseStatus(code = HttpStatus.OK)
-    public void partialUpdate(@PathVariable("no_produit") int no_produit, @RequestBody Map<String, Object> updates) {
-        SiExiste.checkFound(prodService.findById(no_produit));
-        prodService.partialUpdate(no_produit, updates);
+    public ResponseEntity<Void> partialUpdate(@PathVariable("no_produit") int no_produit, @RequestBody Map<String, Object> updates) {
+        Produits reponse =  prodService.findById(no_produit);
+        if (reponse != null) {
+            prodService.partialUpdate(no_produit, updates);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping("/{no_produit}")
     @Operation(summary = "Permet de supprimer un produit via son ID")
-    @ApiResponse(responseCode = "200", description = "Le produit a été supprimé", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produits.class)))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Le produit a été supprimé", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produits.class))),
+            @ApiResponse(responseCode = "404", description = "Le produit n'a pas été trouvé")
+    })
     @ResponseStatus(code = HttpStatus.OK)
-    public void deleteById(@PathVariable("no_produit") int no_produit) {
-        SiExiste.checkFound(prodService.findById(no_produit)); //Méthode qui permet de savoir si le produit qu'on cherche existe dans la bdd
-        prodService.deleteById(no_produit);
+    public ResponseEntity<Void> deleteById(@PathVariable("no_produit") int no_produit) {
+        Produits reponse =  prodService.findById(no_produit);
+        if (reponse != null) {
+            prodService.deleteById(no_produit);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

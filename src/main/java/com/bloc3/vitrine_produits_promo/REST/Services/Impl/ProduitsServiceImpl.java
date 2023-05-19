@@ -25,8 +25,6 @@ public class ProduitsServiceImpl implements ProduitsServices {
         return list;
     }
 
-
-
     @Override
     public Produits findById(int no_produit) {
         if(produitsRepository.findById(no_produit).isPresent()) {
