@@ -40,13 +40,14 @@ public class ProduitsController {
     @GetMapping("/{no_produit}")
     @Operation(summary = "Permet de récupérer un produit via son ID")
     @ApiResponse(responseCode = "200", description = "Le produit a été trouvé", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produits.class)))
-    public ResponseEntity<String> findById(@PathVariable("no_produit") int no_produit) {
+        public ResponseEntity<Produits> findById(@PathVariable("no_produit") int no_produit) {
         Produits reponse =  prodService.findById(no_produit);
 
         if (reponse != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(prodService.findById(no_produit).toString());
+
+            return ResponseEntity.status(HttpStatus.OK).body(reponse);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Le produit avec l'ID " + no_produit + " n'existe pas");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(reponse);
         }
     }
 
