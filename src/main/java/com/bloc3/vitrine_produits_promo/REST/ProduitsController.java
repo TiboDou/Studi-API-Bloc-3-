@@ -8,10 +8,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,15 +41,20 @@ public class ProduitsController {
     @GetMapping("/{no_produit}")
     @Operation(summary = "Permet de récupérer un produit via son ID")
     @ApiResponse(responseCode = "200", description = "Le produit a été trouvé", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produits.class)))
-    public Produits findById(@PathVariable("no_produit") int no_produit) {
+    public ResponseEntity<String> findById(@PathVariable("no_produit") int no_produit) {
         Produits reponse =  prodService.findById(no_produit);
-        SiExiste.checkFound(reponse);
-        return reponse;
+
+        if (reponse != null) {
+            return ResponseEntity.ok(String.valueOf(reponse));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Le produit avec l'ID" + no_produit + " n'existe pas");
+        }
     }
 
 
     @PostMapping
     @Operation(summary = "Permet de créer un nouveau produit")
+    @ApiResponse(responseCode = "201", description = "Le produit a été créé", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produits.class)))
     @ResponseStatus(code = HttpStatus.CREATED)
     public int create(@RequestBody Produits produit) {
         return prodService.create(produit);
@@ -55,6 +62,7 @@ public class ProduitsController {
 
     @PutMapping("/{no_produit}")
     @Operation(summary = "Permet de mettre à jouer un produit via son ID")
+    @ApiResponse(responseCode = "200", description = "Le produit a été modifié", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produits.class)))
     @ResponseStatus(code = HttpStatus.OK)
     public void update(@PathVariable("no_produit") int no_produit, @RequestBody Produits produit) {
         SiExiste.checkFound(prodService.findById(no_produit));
@@ -63,6 +71,7 @@ public class ProduitsController {
 
     @PatchMapping("/{no_produit}")
     @Operation(summary = "Permet de mettre à jour partiellement un produit via son ID")
+    @ApiResponse(responseCode = "200", description = "Le produit a été modifié", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produits.class)))
     @ResponseStatus(code = HttpStatus.OK)
     public void partialUpdate(@PathVariable("no_produit") int no_produit, @RequestBody Map<String, Object> updates) {
         SiExiste.checkFound(prodService.findById(no_produit));
@@ -71,6 +80,7 @@ public class ProduitsController {
 
     @DeleteMapping("/{no_produit}")
     @Operation(summary = "Permet de supprimer un produit via son ID")
+    @ApiResponse(responseCode = "200", description = "Le produit a été supprimé", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Produits.class)))
     @ResponseStatus(code = HttpStatus.OK)
     public void deleteById(@PathVariable("no_produit") int no_produit) {
         SiExiste.checkFound(prodService.findById(no_produit)); //Méthode qui permet de savoir si le produit qu'on cherche existe dans la bdd
