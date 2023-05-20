@@ -5,7 +5,6 @@ import com.bloc3.vitrine_produits_promo.Models.Promotions;
 import com.bloc3.vitrine_produits_promo.REST.Services.ProduitsServices;
 import com.bloc3.vitrine_produits_promo.REST.Services.PromotionsServices;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;

@@ -13,9 +13,11 @@ public class WebConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("https://studi-bloc3-front-td.herokuapp.com");
+                registry.addMapping("/**")
+                        .allowedOrigins("https://studi-bloc3-front-td.herokuapp.com")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedHeaders("*");
             }
         };
     }
-
 }
